@@ -1,0 +1,60 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">User CARD</div>
+
+                    <div class="panel-body">
+    <table class="table table-bordered">
+        <tbody>
+
+            <tr><th>ID:</th><td>{{$user->id}}</td></tr>
+            <tr><th>FirstName</th><td>{{$user->name}}</td></tr>
+            <tr><th>LastName</th><td>{{$user->lastName}}</td></tr>
+            <tr><th>E-Mail</th><td>{{$user->email}}</td></tr>
+            <tr><th>Books that the user has gotten:</th>
+                <td>
+                    @if(count($user->books) == 0)
+                        This user does not have any books
+                    @endif
+                    <ul>
+                        @foreach($user->books as $book)
+                            <li><a href="{{URL::to('books/' . $book->id)}}">{{$book->title}}</a></li>
+                            @if($book)
+                                {!! Form::open(['url'=>'books/'. $book->id , 'class'=>'']) !!}
+                                {!! Form::hidden('_method', 'PATCH') !!}
+                                {!! Form::hidden('_action', 'giveback') !!}
+                                {!! Form::submit('Give back', ['class'=> 'btn-small btn-warning']) !!}
+                                {!! Form::close() !!}
+
+                            @endif
+                        @endforeach
+                    </ul>
+                </td></tr>
+            <tr>
+                <th>Control Buttons:</th>
+                <td>
+                    <a class="btn btn-small btn-success pull-left" href="{{URL::to('users/' . $user->id . '/edit')}}">Edit this user</a>
+                    {!! Form::open(['url'=>'users/'. $user->id, 'class'=>'pull-left']) !!}
+                    {!! Form::hidden('_method', 'DELETE') !!}
+                    {!! Form::submit('Delete this User', ['class'=> 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
+
+
+
+                </td></tr>
+
+
+
+        </tbody>
+    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@stop
+
